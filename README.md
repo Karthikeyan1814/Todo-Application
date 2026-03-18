@@ -1,1 +1,1 @@
-This todo application is created at Gravity intern 
+This todo application is created at Intern 
