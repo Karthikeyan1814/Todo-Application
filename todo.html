@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .container {
+            width: 90%;
+            height: auto;
+            margin-left: 90px;
+            margin-top: 50px;
+            border: 2px solid rgba(255, 0, 247, 0.5);
+            box-shadow: 0 0 45px rgba(212, 0, 255, 0.45);
+            border-radius: 10px;
+            background: none;
+            position: relative;
+            margin-bottom: 100px;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1b0b20, #020617);
+        }
+
+        .title {
+            height: 200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(255, 255, 255);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .title h1 {
+            font-family: cursive;
+        }
+
+        #add-list {
+            margin-top: 60px;
+            margin-left: 90%;
+        }
+
+        button {
+            height: 30px;
+            width: 100px;
+            background-color: yellow;
+            border: 2px solid rgba(0, 200, 255, 0.5);
+            border-radius: 5px;
+        }
+
+        #delete-list{
+            position: absolute;
+            top: 260px;
+            right: 160px;
+        }
+        .records,.popup{
+            color: white;
+        }
+        table{
+            width: 95%;
+            margin-left: 35px;
+            margin-top: 40px;
+            margin-bottom: 100px;
+        }
+        tr,td{
+            text-align: center;
+            height: 40px;
+        }
+       .delete-btn{
+        margin-right: 20px;
+        background-color: red;
+        color: white;
+        border: none;
+       }
+       #task-title{
+        width: 500px;
+       }
+       .popup-title{
+        text-align: center;
+        font-family: cursive;
+        padding-top: 30px;
+        color: black;
+       }
+       #popup{
+        width: 600px;
+        height: 400px;
+        background-color: red;
+        border-radius: 20px;
+        background-color: white;
+        border: 2px solid rgba(255, 0, 247, 0.5);
+            box-shadow: 0 0 45px rgba(212, 0, 255, 0.45),
+            inset 0 0 45px  rgba(212, 0, 255, 0.95);
+        position: absolute;
+        top: 210px;
+        left: 370px;
+       }
+       #popup form{
+        display: grid;
+        grid-template-columns: repeat(1,0.7fr);
+        margin-left: 130px;
+        margin-top: 30px;
+         
+       }
+       #popup label{
+        color: black;
+       }
+       #popup form>input{
+        border-radius: 6px;
+        background-color: #1b0b20;
+        border: none;
+        border: 2px solid rgba(255, 0, 247, 0.5);
+            box-shadow: 0 0 45px rgba(212, 0, 255, 0.45);
+            height: 30px;
+            color: white;
+       }
+       #no-total{
+        margin-left: 80px;
+        color: rgba(255, 0, 247, 0.5);
+       }
+       tr{
+        border-radius: 20px;
+        border: 2px solid rgba(255, 0, 247, 0.5);
+            box-shadow: 0 0 45px rgba(212, 0, 255, 0.25);
+       }
+
+       tr:nth-child(even){
+        background-color: white;
+        color: black;
+
+       }
+       tr:nth-child(odd){
+        background-color: rgba(255, 0, 247, 0.5);
+        color: white;
+       }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>Todo List</h1>
+            <p>Take a step forward to complete your tasks</p>
+        </div>
+        <div class="btn">
+            <button id="add-list">Add Task</button>
+            <!-- <button id="delete-list" style="color: white;background-color: red;">Delete List</button> -->
+        </div>
+        <div class="records">
+            <h1 id="no-total">Total No of task : <span id="total-task" style="color:white;">0</span></h1>
+            <table id="table" >
+                <tr>
+                <th>No.of.Task</th>
+                <th id="task-title">Task description</th>
+                <th>Task Time</th>
+                <th>Task Date</th>
+                <th>Mark As Complete</th>
+                <th>Delete the Task</th>
+                <th>Status</th>
+                </tr>
+            </table>
+        </div>
+        <div id="popup" style="display: none;">
+            <h1 class="popup-title">Task Details</h1>
+            <form id="addtask">
+                <label>Enter Your Task Details</label>
+                <input type="text" id="task-details" required><br>
+
+                <label>Enter Time to complete</label>
+                <input type="time" id="task-date" required><br>
+
+                <label>Enter Date to complete</label>
+                <input type="date" id="task-time" required><br>
+
+                <button type="submit"> Confirm</button>
+            </form >
+        </div>
+    </div>
+
+    <script>
+        const tasks=[];
+
+        document.getElementById("add-list").addEventListener("click",(e)=>{
+            document.getElementById("popup").style.display="block";
+        })
+            
+        
+        document.getElementById("table").addEventListener("click",(e)=>{
+            console.log("table triggred")
+            if(e.target.tagName !== "BUTTON") return;
+
+            if(e.target.innerText==="Completed"){
+                const index=e.target.dataset.index;
+                tasks[index].task_status="Completed";
+                e.target.style.display="none";
+                load();
+            }
+
+            else if(e.target.innerText==="Delete the Task"){
+                const index=e.target.dataset.index;
+                tasks.splice(index,1);
+                load();
+            }
+            
+        })
+
+        
+        document.getElementById("addtask").addEventListener("submit",(e)=>{
+            e.preventDefault();
+            document.getElementById("popup").style.display="none";
+
+            const task=document.getElementById("task-details").value;
+            const time=document.getElementById("task-time").value;
+            const date=document.getElementById("task-date").value;
+            console.log(task)
+            console.log(time)
+            console.log("data fetched...")
+            let obj={
+                task_name:task,
+                task_time:time,
+                task_date:date,
+                task_status:"Not completed"
+            }
+            tasks.push(obj);
+            console.log(tasks);
+            load();
+
+        })
+        function load(){
+            document.querySelectorAll("#table tr:not(:first-child)").forEach(row => row.remove());
+            document.getElementById("total-task").innerHTML=tasks.length;
+              tasks.map((value,i)=>{
+                const index_value=i+1;
+                const task=document.createElement("tr")
+                const status=document.createElement("td")
+                const t1=document.createElement("td")
+                const t2=document.createElement("td")
+                const t3=document.createElement("td")
+                const t4=document.createElement("td")
+                const t5=document.createElement("td")
+                const t6=document.createElement("td")
+
+                const b1=document.createElement("button")
+                const b2=document.createElement("button")
+             
+
+                t1.innerHTML=index_value;
+                t2.innerHTML=value.task_name;
+                t3.innerHTML=value.task_time;
+                t4.innerHTML=value.task_date;
+                b1.innerHTML="Completed";
+                b2.innerHTML="Delete the Task";
+                status.innerHTML=value.task_status;
+                
+
+                b1.setAttribute("value",i)
+                b2.setAttribute("value",i)
+                b2.setAttribute("class","delete-btn")
+                status.setAttribute("value",i)
+                
+                //changing the button and status based upon condition
+                if(value.task_status==="Completed"){
+                    status.style.color="green";
+                    b1.style.display="none";
+                }else{
+                    status.style.color="red";
+                }
+
+                b1.dataset.index=i;
+                b2.dataset.index=i;
+                   
+                t5.appendChild(b1)
+                t6.appendChild(b2)
+                
+               task.appendChild(t1);
+                task.appendChild(t2);
+                task.appendChild(t3);
+                task.appendChild(t4);
+                task.appendChild(t5);
+                task.appendChild(t6);
+                task.appendChild(status)
+
+                const tabel=document.getElementById("table");
+                tabel.appendChild(task);
+                
+
+                console.log("data updated.....")
+            })
+        }
+
+        document.getElementById("complete-btn").addEventListener("click",()=>{
+            consol.log("button triggred")
+        })
+
+        
+        
+    </script>
+</body>
+
+</html>
