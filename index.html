@@ -142,6 +142,61 @@
         background-color: rgba(255, 0, 247, 0.5);
         color: white;
        }
+
+       @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 20px;
+                margin-bottom: 50px;
+            }
+            #add-list {
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                margin-top: 20px;
+            }
+            .records {
+                overflow-x: auto;
+                width: 100%;
+                padding: 0 10px;
+            }
+            table {
+                margin-left: 0;
+                margin-top: 20px;
+                min-width: 600px; /* Ensures the table can scroll on small devices */
+            }
+            #task-title {
+                width: auto;
+            }
+            #no-total {
+                margin-left: 10px;
+                font-size: 1.2rem;
+            }
+            #popup {
+                width: 90%;
+                left: 5%;
+                top: 100px;
+                height: auto;
+                padding-bottom: 20px;
+                position: fixed; /* Better than absolute for mobile dialogs */
+            }
+            #popup form {
+                margin-left: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            #popup form > input {
+                width: 80%;
+                margin-bottom: 15px;
+            }
+            #popup label {
+                margin-bottom: 5px;
+            }
+       }
     </style>
 </head>
 
